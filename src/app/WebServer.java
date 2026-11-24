@@ -31,13 +31,21 @@ import java.util.stream.Collectors;
 
 public class WebServer {
 
-    private static final int PORT = 8080;
+    private static final int DEFAULT_PORT = 8080;
     private static final String WEB_ROOT = "web";
     private static final Gson gson = new GsonBuilder().serializeNulls().create();
     private static final PayrollManager manager = new PayrollManager();
 
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        int port = DEFAULT_PORT;
+        String envPort = System.getenv("PORT");
+        if (envPort != null && !envPort.trim().isEmpty()) {
+            try {
+                port = Integer.parseInt(envPort.trim());
+            } catch (NumberFormatException ignored) {}
+        }
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         
         // API Context Handler
         server.createContext("/api", new ApiHandler());
@@ -49,7 +57,7 @@ public class WebServer {
         server.start();
         System.out.println("==================================================");
         System.out.println("   E-Zorax Web Server is Running!                 ");
-        System.out.println("   URL: http://localhost:" + PORT + "             ");
+        System.out.println("   URL: http://localhost:" + port + "             ");
         System.out.println("==================================================");
     }
 
