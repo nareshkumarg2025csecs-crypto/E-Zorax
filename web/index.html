@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Zorax | Employee Payroll Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sticky Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-title">
+                    <svg class="brand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    E-Zorax
+                </div>
+                <span class="brand-sub">Easy Zero-Latency Operations for Resource &amp; Analytics matriX</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link active">Home</a></li>
+                    <li><a href="employees.html" class="nav-link">Employees</a></li>
+                    <li><a href="payroll.html" class="nav-link">Payroll</a></li>
+                    <li><a href="reports.html" class="nav-link">Reports</a></li>
+                    <li><a href="audit.html" class="nav-link">Audit</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="container">
+        <section class="hero">
+            <div class="hero-badge">
+                <svg fill="currentColor" viewBox="0 0 20 20" width="14" height="14">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                Course CS23332 &bull; Java 17 + JDBC + MySQL Architecture
+            </div>
+
+            <h1 class="hero-title">Enterprise Payroll Management &amp; Analytics</h1>
+            <p class="hero-sub">
+                A transaction-safe, polymorphic employee payroll platform engineered for precision compensation processing, dynamic departmental raises, and audit telemetry.
+            </p>
+
+            <div class="hero-meaning-card">
+                <div class="hero-meaning-title">System Brand Identity</div>
+                <div class="hero-meaning-desc">
+                    <strong>E-Zorax</strong> : Easy Zero-Latency Operations for Resource &amp; Analytics matriX
+                </div>
+            </div>
+
+            <div class="hero-cta">
+                <a href="employees.html" class="btn btn-primary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    Open Dashboard (Employees)
+                </a>
+                <a href="payroll.html" class="btn btn-secondary">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Run Payroll
+                </a>
+            </div>
+        </section>
+
+        <!-- Live Strip of 4 Stat Cards from /api/summary -->
+        <section class="stat-grid">
+            <div class="card stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                    <div class="stat-label">Active Headcount</div>
+                    <div class="stat-value" id="statTotalEmployees">—</div>
+                    <div class="stat-sub">Across all departments</div>
+                </div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <div>
+                    <div class="stat-label">Monthly Total Payout</div>
+                    <div class="stat-value tabular" id="statTotalPayout">—</div>
+                    <div class="stat-sub">Calculated via OOP rules</div>
+                </div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                </div>
+                <div>
+                    <div class="stat-label">Highest Paid Employee</div>
+                    <div class="stat-value" id="statHighestPaid">—</div>
+                    <div class="stat-sub tabular" id="statHighestSub">Top earner</div>
+                </div>
+            </div>
+
+            <div class="card stat-card">
+                <div class="stat-icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                </div>
+                <div>
+                    <div class="stat-label">Active Departments</div>
+                    <div class="stat-value" id="statDepartments">—</div>
+                    <div class="stat-sub">IT, HR, Finance</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What this system does: 6 Feature Cards -->
+        <section style="margin-top: 3.5rem;">
+            <h2 class="section-title">Core System Capabilities</h2>
+            <p class="section-subtitle">
+                Built to satisfy course CS23332 requirements combining rigorous Object-Oriented Programming with robust DBMS transactions.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    </div>
+                    <h3 class="feature-title">Pure Polymorphic OOP</h3>
+                    <p class="feature-desc">
+                        Full-Time, Part-Time, and Contract models inherit from abstract Employee. Runtime polymorphism handles calculation and database persistence with zero <code>instanceof</code> checks.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    </div>
+                    <h3 class="feature-title">Itemized Payslips</h3>
+                    <p class="feature-desc">
+                        On-demand payslip generation with component breakdown (Basic, HRA, DA, PF or Hours &times; Rate), plus overloaded methods for percentage and fixed bonuses.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    </div>
+                    <h3 class="feature-title">Atomic Transactions</h3>
+                    <p class="feature-desc">
+                        Monthly payroll execution is encapsulated in a single all-or-nothing JDBC transaction. Duplicate monthly runs trigger an immediate rollback with zero partial records.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <h3 class="feature-title">Departmental Raise Engine</h3>
+                    <p class="feature-desc">
+                        Invokes MySQL stored procedure <code>sp_give_raise</code> using a SQL cursor and NOT FOUND handler to iterate and adjust salaries departmental-wide.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h3 class="feature-title">Automatic Audit Trigger</h3>
+                    <p class="feature-desc">
+                        Database-level AFTER UPDATE trigger <code>trg_basic_audit</code> logs old and new basic salaries to <code>salary_audit</code> whenever an employee's salary changes.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                    </div>
+                    <h3 class="feature-title">Real-time MySQL Persistence</h3>
+                    <p class="feature-desc">
+                        All operations write directly to MySQL through PreparedStatement queries. No local state or memory caching: data persists reliably across server restarts.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How salary is calculated: Clean Table -->
+        <section style="margin-bottom: 4rem;">
+            <h2 class="section-title">Salary Calculation Formulas</h2>
+            <p class="section-subtitle">
+                Deterministic business logic implemented identically in Java and MySQL stored functions.
+            </p>
+
+            <div class="table-wrapper">
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee Classification</th>
+                                <th>Compensation Formula</th>
+                                <th>Breakdown Details</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge badge-fulltime">Full-Time</span></td>
+                                <td><code>Basic + 20% HRA + 10% DA - 12% PF</code></td>
+                                <td>Net is <strong>118%</strong> of basic salary (HRA: +20%, DA: +10%, PF: -12%)</td>
+                                <td class="tabular">Basic Rs. 40,000.00 &rarr; <strong>Rs. 47,200.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-parttime">Part-Time</span></td>
+                                <td><code>Hours Worked &times; Hourly Rate</code></td>
+                                <td>Direct compensation computed strictly from logged working hours</td>
+                                <td class="tabular">120 hrs &times; Rs. 250.00 &rarr; <strong>Rs. 30,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge badge-contract">Contract</span></td>
+                                <td><code>Fee Per Project &times; Projects Done</code></td>
+                                <td>Milestone deliverable compensation computed per completed unit</td>
+                                <td class="tabular">3 projects &times; Rs. 15,000.00 &rarr; <strong>Rs. 45,000.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Stack -->
+        <section style="margin-bottom: 3.5rem;">
+            <div class="card" style="padding: 2rem; background-color: var(--bg-light);">
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; text-align: center;">Technology Stack &amp; Standards</h3>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 2rem; flex-wrap: wrap; text-align: center;">
+                    <div>
+                        <div style="font-weight: 700; color: var(--navy);">Java 17 LTS</div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted);">OOP, Streams, Lambdas</div>
+                    </div>
+                    <div style="color: var(--border); font-size: 1.5rem;">&bull;</div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--navy);">MySQL 8+ / 26+</div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted);">Triggers, Procedures, Views</div>
+                    </div>
+                    <div style="color: var(--border); font-size: 1.5rem;">&bull;</div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--navy);">JDBC Driver</div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted);">Connector/J, Transactions</div>
+                    </div>
+                    <div style="color: var(--border); font-size: 1.5rem;">&bull;</div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--navy);">JDK HttpServer</div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted);">Zero-Framework HTTP &amp; REST</div>
+                    </div>
+                    <div style="color: var(--border); font-size: 1.5rem;">&bull;</div>
+                    <div>
+                        <div style="font-weight: 700; color: var(--navy);">Plain Web UI</div>
+                        <div style="font-size: 0.82rem; color: var(--text-muted);">HTML5, CSS3, ES6 Fetch</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About the Team -->
+        <section class="team-section">
+            <h2 class="section-title">Academic Project Team</h2>
+            <p class="section-subtitle" style="margin-bottom: 1.5rem;">
+                Rajalakshmi Engineering College &bull; Department of Computer Science and Engineering (Cyber Security)
+            </p>
+
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-name">Jaish R</div>
+                    <div class="team-role">Developer</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-name">Jashvanth R</div>
+                    <div class="team-role">Developer</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-name">Ayaaz Shaarav K M</div>
+                    <div class="team-role">Developer</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-name">Naresh Kumar G</div>
+                    <div class="team-role">Developer</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; font-size: 0.88rem; color: var(--text-muted);">
+                Second Year, Section C &bull; Course CS23332 &bull; November 2026
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <span class="footer-brand">E-Zorax</span> &mdash; Easy Zero-Latency Operations for Resource &amp; Analytics matriX
+            </div>
+            <div>
+                Rajalakshmi Engineering College, Thandalam &bull; Course CS23332 &bull; Nov 2026
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initHomePage);
+    </script>
+</body>
+</html>

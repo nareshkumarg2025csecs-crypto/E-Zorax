@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payroll Operations | E-Zorax</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sticky Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-title">
+                    <svg class="brand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    E-Zorax
+                </div>
+                <span class="brand-sub">Easy Zero-Latency Operations for Resource &amp; Analytics matriX</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="employees.html" class="nav-link">Employees</a></li>
+                    <li><a href="payroll.html" class="nav-link active">Payroll</a></li>
+                    <li><a href="reports.html" class="nav-link">Reports</a></li>
+                    <li><a href="audit.html" class="nav-link">Audit</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container page-header-content">
+            <div>
+                <h1 class="page-title">Monthly Payroll &amp; Compensation Adjustments</h1>
+                <p class="page-subtitle">Execute transaction-safe payroll runs and departmental raises backed by stored routines.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Dual Operations Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+            
+            <!-- Operation 1: Monthly Payroll Run -->
+            <div class="card">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                    <div class="stat-icon-wrapper" style="width: 40px; height: 40px;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--navy);">Run Monthly Payroll</h2>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Atomic All-or-Nothing JDBC Transaction</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                    Computes each active employee's net salary and records individual payslips. If this month has already been processed, the operation rolls back atomically.
+                </p>
+
+                <div id="payrollRunAlert" style="display: none;"></div>
+
+                <div class="form-group">
+                    <label class="form-label" for="payrollMonthInput">Payroll Month (YYYY-MM)</label>
+                    <input type="text" id="payrollMonthInput" class="form-input" placeholder="e.g. 2026-11" value="2026-11">
+                </div>
+
+                <button class="btn btn-primary" style="width: 100%;" onclick="executePayrollRun()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Execute Payroll Run
+                </button>
+            </div>
+
+            <!-- Operation 2: Department Raise via Stored Procedure -->
+            <div class="card">
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                    <div class="stat-icon-wrapper" style="width: 40px; height: 40px; background-color: #FEF3C7; color: #B45309;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--navy);">Department Salary Raise</h2>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">MySQL Stored Procedure <code>sp_give_raise</code></div>
+                    </div>
+                </div>
+
+                <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+                    Increases the basic salary of every Full-Time employee in the target department using a database cursor. Automatically logs updates in the <strong>Audit</strong> page via trigger.
+                </p>
+
+                <div id="raiseAlert" style="display: none;"></div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+                    <div>
+                        <label class="form-label" for="raiseDeptSelect">Target Dept</label>
+                        <select id="raiseDeptSelect" class="form-select"></select>
+                    </div>
+                    <div>
+                        <label class="form-label" for="raisePercentInput">Raise %</label>
+                        <input type="number" id="raisePercentInput" class="form-input" min="1" max="100" step="0.5" value="10">
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" style="width: 100%; border-color: #CBD5E1;" onclick="executeDepartmentRaise()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    Apply Department Raise
+                </button>
+            </div>
+        </div>
+
+        <!-- Historical Payslips Viewer -->
+        <div class="table-wrapper">
+            <div class="table-toolbar">
+                <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                    <div style="font-weight: 700; color: var(--navy); font-size: 1.05rem;">
+                        Historical Payslips Archive
+                    </div>
+                    <div class="filter-group">
+                        <input type="text" id="historyMonthInput" class="form-input" style="width: 140px; padding: 0.4rem 0.75rem;" placeholder="YYYY-MM" value="2026-11">
+                        <button class="btn btn-secondary btn-sm" onclick="loadHistoricalPayslips()">
+                            Filter Month
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <span id="historyTotalBadge" class="badge badge-neutral" style="font-size: 0.85rem; padding: 0.4rem 0.8rem;">
+                        Loading...
+                    </span>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Slip ID</th>
+                            <th>Emp ID</th>
+                            <th>Full Name</th>
+                            <th>Department</th>
+                            <th>Type</th>
+                            <th>Disbursed Net Salary</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payslipsHistoryTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 2rem;">Loading historical records...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <span class="footer-brand">E-Zorax</span> &mdash; Easy Zero-Latency Operations for Resource &amp; Analytics matriX
+            </div>
+            <div>
+                Rajalakshmi Engineering College &bull; Course CS23332 &bull; Nov 2026
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initPayrollPage);
+    </script>
+</body>
+</html>

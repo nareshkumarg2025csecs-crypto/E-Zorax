@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employees | E-Zorax Payroll System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Sticky Navigation -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand">
+                <div class="brand-title">
+                    <svg class="brand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    E-Zorax
+                </div>
+                <span class="brand-sub">Easy Zero-Latency Operations for Resource &amp; Analytics matriX</span>
+            </a>
+
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="employees.html" class="nav-link active">Employees</a></li>
+                    <li><a href="payroll.html" class="nav-link">Payroll</a></li>
+                    <li><a href="reports.html" class="nav-link">Reports</a></li>
+                    <li><a href="audit.html" class="nav-link">Audit</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container page-header-content">
+            <div>
+                <h1 class="page-title">Employee Directory</h1>
+                <p class="page-subtitle">Real-time compensation records managed with polymorphic Java models in MySQL.</p>
+            </div>
+            <div>
+                <button class="btn btn-primary" onclick="openAddEmployee()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Add Employee
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Table Toolbar & Filters -->
+        <div class="table-wrapper">
+            <div class="table-toolbar">
+                <div class="filter-group">
+                    <div class="search-box">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="searchInput" class="form-input" placeholder="Search by ID or name...">
+                    </div>
+
+                    <select id="typeFilter" class="form-select" style="min-width: 150px;">
+                        <option value="">All Types</option>
+                        <option value="FULL_TIME">Full-Time</option>
+                        <option value="PART_TIME">Part-Time</option>
+                        <option value="CONTRACT">Contract</option>
+                    </select>
+
+                    <select id="deptFilter" class="form-select" style="min-width: 170px;">
+                        <option value="">All Departments</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button class="btn btn-secondary btn-sm" onclick="loadEmployees()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Refresh Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Employees Table -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Full Name</th>
+                            <th>Department</th>
+                            <th>Classification</th>
+                            <th>Net Salary</th>
+                            <th>Last Updated</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeesTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem;">Loading employee data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Employee Modal -->
+    <div id="employeeModal" class="modal-backdrop">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add New Employee</h3>
+                <button class="modal-close" onclick="closeModal('employeeModal')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalError" class="alert alert-error" style="display:none; margin-bottom:1rem; padding:0.75rem 1rem;"></div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modalEmpId">Employee ID *</label>
+                    <input type="text" id="modalEmpId" class="form-input" placeholder="e.g. E108" required>
+                    <div class="form-help">Must be a unique identifier. Case-insensitive.</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modalEmpName">Full Name *</label>
+                    <input type="text" id="modalEmpName" class="form-input" placeholder="e.g. John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modalDept">Department *</label>
+                    <select id="modalDept" class="form-select"></select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modalEmpType">Employee Type *</label>
+                    <select id="modalEmpType" class="form-select">
+                        <option value="FULL_TIME">Full-Time (Basic + HRA + DA - PF)</option>
+                        <option value="PART_TIME">Part-Time (Hours &times; Rate)</option>
+                        <option value="CONTRACT">Contract (Fee &times; Projects)</option>
+                    </select>
+                </div>
+
+                <!-- Type-Specific Dynamic Fields -->
+                <div id="fullTimeFields">
+                    <div class="form-group">
+                        <label class="form-label" for="modalBasic">Basic Salary (Rs.) *</label>
+                        <input type="number" id="modalBasic" class="form-input" step="0.01" min="1" placeholder="e.g. 45000">
+                        <div class="form-help">Net salary will calculate automatically: Basic + 20% HRA + 10% DA - 12% PF.</div>
+                    </div>
+                </div>
+
+                <div id="partTimeFields" style="display:none;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="modalHours">Hours Worked *</label>
+                            <input type="number" id="modalHours" class="form-input" min="0" placeholder="e.g. 80">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="modalRate">Hourly Rate (Rs.) *</label>
+                            <input type="number" id="modalRate" class="form-input" step="0.01" min="1" placeholder="e.g. 350">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contractFields" style="display:none;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem;">
+                        <div class="form-group">
+                            <label class="form-label" for="modalFee">Fee Per Project (Rs.) *</label>
+                            <input type="number" id="modalFee" class="form-input" step="0.01" min="1" placeholder="e.g. 18000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="modalProjects">Projects Done *</label>
+                            <input type="number" id="modalProjects" class="form-input" min="0" placeholder="e.g. 2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('employeeModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveEmployee()">Save Employee</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payslip Drawer / Modal -->
+    <div id="payslipModal" class="modal-backdrop">
+        <div class="modal" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3 class="modal-title" id="payslipTitle">Employee Payslip</h3>
+                <button class="modal-close" onclick="closeModal('payslipModal')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="payslip-card">
+                    <div class="payslip-header">
+                        <div class="payslip-company">TechNova &bull; E-Zorax</div>
+                        <div class="payslip-sub">Official Employee Compensation Voucher</div>
+                    </div>
+
+                    <div class="payslip-emp-info">
+                        <div>
+                            <span style="color:var(--text-muted);">Employee:</span>
+                            <strong id="payslipEmpName">—</strong> (<span id="payslipEmpId">—</span>)
+                        </div>
+                        <div>
+                            <span style="color:var(--text-muted);">Department:</span>
+                            <strong id="payslipDept">—</strong>
+                        </div>
+                        <div>
+                            <span style="color:var(--text-muted);">Type:</span>
+                            <span id="payslipType">—</span>
+                        </div>
+                    </div>
+
+                    <table class="payslip-breakdown-table">
+                        <tbody id="payslipBreakdownBody"></tbody>
+                    </table>
+
+                    <div class="payslip-net-box">
+                        <span>Net Take-Home Salary:</span>
+                        <span id="payslipNetSalary" class="tabular" style="font-size:1.25rem;">—</span>
+                    </div>
+
+                    <div class="payslip-bonus-strip">
+                        <div>
+                            <div style="color:var(--text-muted);">Performance Bonus (10%):</div>
+                            <strong id="payslipBonus10" class="tabular" style="color:var(--primary); font-size:0.95rem;">—</strong>
+                        </div>
+                        <div>
+                            <div style="color:var(--text-muted);">Fixed Bonus:</div>
+                            <strong id="payslipBonusFixed" class="tabular" style="color:var(--primary); font-size:0.95rem;">—</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="window.print()">Print</button>
+                <button class="btn btn-primary" onclick="closeModal('payslipModal')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal-backdrop">
+        <div class="modal" style="max-width: 440px;">
+            <div class="modal-header">
+                <h3 class="modal-title" style="color:var(--error);">Confirm Deletion</h3>
+                <button class="modal-close" onclick="closeModal('deleteModal')">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently delete <strong id="deleteTargetName">—</strong>?</p>
+                <p style="font-size:0.85rem; color:var(--text-muted); margin-top:0.5rem;">
+                    This will cascade delete all corresponding full-time, part-time, or contract records and past payslips immediately from MySQL.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="executeDelete()">Delete Permanently</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <span class="footer-brand">E-Zorax</span> &mdash; Easy Zero-Latency Operations for Resource &amp; Analytics matriX
+            </div>
+            <div>
+                Rajalakshmi Engineering College &bull; Course CS23332 &bull; Nov 2026
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', initEmployeesPage);
+    </script>
+</body>
+</html>
